@@ -1,0 +1,63 @@
+<html>
+
+<head>
+    <title>grapecity_spreadJS_demo</title>
+    <script src="jquery_3.1.1.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="gc.spread.sheets.excel2013white.14.2.2.css" type="text/css">
+    <script src="gc.spread.sheets.all.14.2.2.min.js" type="text/javascript"></script>
+    <script src="gc.spread.excelio.14.2.2.min.js" type="text/javascript"></script>
+    <script src="https://cdn.grapecity.com.cn/spreadjs/scripts/FileSaver.min.js" type="text/javascript"></script>
+    <script src="gc.spread.sheets.resources.zh.14.2.2.min.js" type="text/javascript"></script>
+    <script src="gc.spread.sheets.print.14.2.2.min.js" type="text/javascript"></script>
+    <script src="gc.spread.sheets.pdf.14.2.2.min.js" type="text/javascript"></script>
+    <script src="gc.spread.sheets.charts.14.2.2.min.js" type="text/javascript"></script>
+    <script src="v14.js" type="text/javascript"></script>
+    <style type="text/css">
+        #ss {
+            height: 400px;
+            width: 100%
+        }
+        p{
+            color: #336699;
+            text-align: center;
+        }
+        
+        button{
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <p>打印工作簿中前两个工作表</p>
+    <button id="btn">打印前2个表单</button>
+    <div id="ss"></div>
+    <div id="print" style="display:none;"></div>
+    <script type="text/javascript">
+        // Title:打印部分sheet
+        // Description：点击按钮，打印前两个表单
+        // Tag:打印、部分表单
+        GC.Spread.Common.CultureManager.culture('zh-cn');
+        
+        $(document).ready(function() {
+            var spread = new GC.Spread.Sheets.Workbook(document.getElementById('ss'), {
+                sheetCount: 5
+            });
+            for (let i = 0; i < spread.sheets.length; i++) {
+                let sheet = spread.getSheet(i);
+                sheet.setValue(0, 0, "Sheet" + i);
+            }
+            $("#btn").click(function() {
+                var json = JSON.stringify(spread.toJSON());
+                var printWorkbook = new GC.Spread.Sheets.Workbook(document.getElementById('print'));
+                printWorkbook.fromJSON(JSON.parse(json));
+                printWorkbook.removeSheet(2);
+                printWorkbook.removeSheet(2);
+                printWorkbook.removeSheet(2);
+                printWorkbook.print();
+            });
+        });
+    </script>
+</body>
+
+</html>
